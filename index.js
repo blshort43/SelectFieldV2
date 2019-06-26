@@ -61,7 +61,6 @@ const StyledSelectField = styled.select`
   :focus {
     outline-offset: 0;
     border: solid 1px #2e66ff;
-    color: black;
     ::placeholder {
       opacity: 0;
     }
@@ -70,6 +69,11 @@ const StyledSelectField = styled.select`
 
 const StyledLegend = styled.legend`
   outline: none;
+  pointer-events: none;
+  font-size: 12px;
+  transition: all 0.25s ease-in-out;
+  position: absolute;
+  box-sizing: border-box;
 `;
 
 class SelectField extends React.PureComponent {
@@ -78,19 +82,13 @@ class SelectField extends React.PureComponent {
     showPlaceholder: true,
   };
 
-  handleHover = () => {
-    if (this.props.value) {
-      this.setState({ focused: true });
-    }
-  };
-
   handleFocus = () => {
     this.setState({ focused: true, showPlaceholder: false });
   };
 
   handleBlur = () => {
     if (this.props.value) {
-      this.setState({ focused: true });
+      this.setState({ showPlaceholder: true });
     } else {
       this.setState({ focused: false, showPlaceholder: true });
     }
@@ -110,13 +108,8 @@ class SelectField extends React.PureComponent {
         height="30px"
       >
         <StyledLegend
-          tabIndex="0"
           style={{
-            fontSize: '12px',
             opacity: `${this.state.focused ? 1 : 0}`,
-            transition: 'all .25s ease-in-out',
-            position: 'absolute',
-            boxSizing: 'border-box',
             transform: `${
               this.state.focused ? 'translate(0, -18px)' : 'translate(10px, 0)'
             }`,
@@ -128,15 +121,14 @@ class SelectField extends React.PureComponent {
         </StyledLegend>
         <StyledSelectField
           {...props}
-          value={props.value || ''}
+          value={props.value}
           name={props.name}
-          onMouseOver={this.handleHover}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
         >
-          {this.state.showPlaceholder ? (
+          {this.state.showPlaceholder && (
             <option value="">{props.label}</option>
-          ) : null}
+          )}
 
           {props.children}
         </StyledSelectField>
