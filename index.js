@@ -82,6 +82,7 @@ const StyledSelectField = styled.select`
 `;
 
 const StyledLegend = styled.legend`
+  color: ${props => (props.labelColor ? props.labelColor : '#000000')};
   outline: none;
   pointer-events: none;
   font-size: 12px;
@@ -117,6 +118,7 @@ class SelectField extends React.PureComponent {
       onFocus,
       onBlur,
       label,
+      labelColor,
       border,
       borderFocused,
       borderHovered,
@@ -135,6 +137,7 @@ class SelectField extends React.PureComponent {
     return (
       <StyledCard {...rest}>
         <StyledLegend
+          labelColor={labelColor}
           style={{
             opacity: `${this.state.focused ? 1 : 0}`,
             transform: `${
