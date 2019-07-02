@@ -34,19 +34,21 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Card } from 'rebass';
 
+const StyledCard = styled(Card)`
+  width: ${props => (props.width ? props.width : '200px')};
+  height: ${props => (props.height ? props.height : '55px')};
+`;
+
 const StyledSelectField = styled.select`
   outline: none;
   font-family: inherit;
   padding: ${props => (props.padding ? props.padding : '12px')};
   transition: all 0.25s linear;
-  margin: 0;
   box-sizing: border-box;
   border: ${props => (props.border ? props.border : '1px solid #909090')};
   border-radius: ${props => (props.borderRadius ? props.borderRadius : '6px')};
-  height: ${props => (props.height ? props.height : '45px')};
   width: 100%;
-  max-width: ${props => (props.maxWidth ? props.maxWidth : '300px')};
-  min-width: 144px;
+  height: 100%;
   :invalid {
     color: gray;
   }
@@ -96,18 +98,25 @@ class SelectField extends React.PureComponent {
   };
 
   render() {
-    const { ...props } = this.props;
+    const {
+      value,
+      type,
+      name,
+      onFocus,
+      onBlur,
+      label,
+      border,
+      placeholder,
+      padding,
+      background,
+      borderRadius,
+      children,
+      required,
+      ...rest
+    } = this.props;
 
     return (
-      <Card
-        m={props.margin || props.m || 0}
-        mt={props.mt || 3}
-        p={0}
-        bg={props.bg}
-        borderRadius={props.borderRadius || '6px'}
-        width={props.width}
-        height="30px"
-      >
+      <StyledCard {...rest}>
         <StyledLegend
           style={{
             opacity: `${this.state.focused ? 1 : 0}`,
@@ -115,27 +124,27 @@ class SelectField extends React.PureComponent {
               this.state.focused ? 'translate(0, -18px)' : 'translate(10px, 0)'
             }`,
           }}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
         >
-          {props.label}
+          {label}
         </StyledLegend>
         <StyledSelectField
           // ref="yearSelect"
-
-          {...props}
-          value={props.value}
-          name={props.name}
+          required={required}
+          border={border}
+          borderRadius={borderRadius}
+          background={background}
+          padding={padding}
+          placeholder={placeholder || ''}
+          value={value || ''}
+          type={type || 'text'}
+          name={name}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
         >
-          {this.state.showPlaceholder && (
-            <option value="">{props.label}</option>
-          )}
-
-          {props.children}
+          {this.state.showPlaceholder && <option value="">{label}</option>}
+          {children}
         </StyledSelectField>
-      </Card>
+      </StyledCard>
     );
   }
 }
