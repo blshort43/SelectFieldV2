@@ -128,6 +128,7 @@ class SelectField extends React.PureComponent {
       min,
       required,
       children,
+      onChange,
       ...rest
     } = this.props;
 
@@ -160,6 +161,7 @@ class SelectField extends React.PureComponent {
           name={name}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
+          onChange={onChange}
         >
           {this.state.showPlaceholder && <option value="">{label}</option>}
           {children}
